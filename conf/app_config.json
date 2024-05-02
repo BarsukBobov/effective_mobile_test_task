@@ -1,0 +1,6 @@
+{
+  "postgresql": {
+    "dsn": "postgres://postgres:postgres@db:5432/postgres?sslmode=disable"
+  },
+  "dbmate_migrations_dir": "./schema"
+}

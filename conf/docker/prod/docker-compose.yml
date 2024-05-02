@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      dockerfile: conf/docker/prod/Dockerfile
+    ports:
+      - "127.0.0.1:3000:3000"
+    environment:
+      - APP_CONFIG_PATH=$APP_CONFIG_PATH
+      - PRODUCTION=$PRODUCTION
+      - LOG_LEVEL=$LOG_LEVEL
+      - MIN_CONNS=$MIN_CONNS
+      - MAX_CONNS=$MAX_CONNS
+      - MAX_CONN_LIFE_TIME=$MAX_CONN_LIFE_TIME
+      - MAX_CONNIDLE_TIME=$MAX_CONNIDLE_TIME
+      - HEALTH_CHECK_PERIOD=$HEALTH_CHECK_PERIOD
+      - EM_API=$EM_API
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    extends:
+      file: conf/docker/docker-compose-base.yml
+      service: db
+    volumes:
+      - ./data/pgdata:$PGDATA
+
+networks:
+  default:
+    name: em_test_task_prod
